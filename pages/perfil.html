@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nura - Meu Perfil</title>
+
+    <link rel="stylesheet" href="../styles/style.css">
+    <link rel="manifest" href="../manifest.json">
+    <meta name="theme-color" content="#16a34a">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        .form-group {
+            margin-bottom: 1rem;
+            width: 100%;
+        }
+
+        .input {
+            width: 100%;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="container header-inner">
+            <a href="../index.html" class="logo">Nura<span>.</span></a>
+            <nav class="nav-links">
+                <a href="../index.html">Início</a>
+                <a href="produtos.html">Produtos</a>
+                <a href="carrinho.html">Carrinho</a>
+            </nav>
+
+            <div class="header-actions" style="display: flex; align-items: center; gap: 0.5rem;">
+
+                <span id="header-user-display"
+                    style="font-size: 0.9rem; font-weight: 600; color: var(--primary-dark); margin-right: 5px;">Carregando...</span>
+
+                <div style="width: 35px; height: 35px; background: var(--secondary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--primary-dark); font-weight: bold;"
+                    id="header-user-avatar">
+                    -
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container" style="padding: 3rem 1.5rem;">
+        <h1 style="font-size: 2rem; margin-bottom: 2rem;">Minha Conta</h1>
+
+        <div class="profile-grid">
+            <aside class="profile-sidebar">
+                <nav class="sidebar-menu">
+                    <button class="sidebar-link tab-btn active" data-target="personal-data"><i class="ph ph-user"></i>
+                        Dados Pessoais</button>
+                    <button class="sidebar-link tab-btn" data-target="orders"><i class="ph ph-package"></i> Meus
+                        Pedidos</button>
+                    <button class="sidebar-link tab-btn" data-target="addresses"><i class="ph ph-map-pin"></i>
+                        Endereços</button>
+                    <div style="height: 1px; background: var(--border); margin: 0.5rem 0;"></div>
+                    <button id="btn-logout-firebase" class="sidebar-link" style="color: #ef4444;"><i
+                            class="ph ph-sign-out"></i> Sair</button>
+                </nav>
+            </aside>
+
+            <section class="profile-content">
+                <div id="personal-data" class="form-content active">
+                    <div class="card" style="box-shadow: none; padding: 0; border: none;">
+                        <div class="card-content" style="padding: 0;">
+                            <h2 style="font-size: 1.5rem; margin-bottom: 1.5rem;">Seus Dados</h2>
+                            <form id="form-perfil">
+                                <div class="form-group">
+                                    <label for="input-nome">Nome Completo</label>
+                                    <input type="text" id="input-nome" class="input" placeholder="Seu nome">
+                                </div>
+                                <div class="form-group">
+                                    <label for="input-email">Email (Login)</label>
+                                    <input type="email" id="input-email" class="input" placeholder="seu@email.com">
+                                </div>
+                                <div class="form-group">
+                                    <label for="input-senha">Nova Senha <span
+                                            style="font-weight: normal; font-size: 0.8rem; color: var(--muted);">(Deixe
+                                            em branco para manter a atual)</span></label>
+                                    <input type="password" id="input-senha" class="input"
+                                        placeholder="Digite apenas se quiser trocar">
+                                </div>
+                                <div style="margin-top: 1.5rem;">
+                                    <button type="submit" id="btn-salvar" class="btn btn-primary">Salvar
+                                        Alterações</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="orders" class="form-content">
+                    <h2 style="font-size: 1.5rem; margin-bottom: 1.5rem;">Histórico de Pedidos</h2>
+                    <div class="card"
+                        style="text-align: center; padding: 4rem 2rem; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                        <div style="font-size: 5rem; color: var(--muted); margin-bottom: 1.5rem; opacity: 0.5;">
+                            <i class="ph-thin ph-shopping-bag-open"></i>
+                        </div>
+                        <h3 style="font-size: 1.5rem; margin-bottom: 0.5rem; font-weight: 600;">Você ainda não fez
+                            nenhum pedido.</h3>
+                        <p style="color: var(--muted); margin-bottom: 2rem; font-size: 1.1rem;">Que tal explorar nosso
+                            cardápio?</p>
+                        <a href="produtos.html" class="btn btn-primary"
+                            style="padding: 0.8rem 2rem; font-size: 1.1rem;">Fazer Pedido</a>
+                    </div>
+                </div>
+
+                <div id="addresses" class="form-content">
+                    <h2 style="font-size: 1.5rem; margin-bottom: 1.5rem;">Meus Endereços</h2>
+                    <div class="card">
+                        <p style="color: var(--muted); text-align: center; padding: 2rem;">Nenhum endereço cadastrado.
+                        </p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container" style="text-align: center; padding: 2rem 0;">&copy; 2025 Nura.</div>
+    </footer>
+
+    <script src="../scripts/script.js"></script>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut, updateProfile, updateEmail, updatePassword } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBoSeMo0JROnkjtNPQXCyt9Ezzi_pUrtN8",
+            authDomain: "nura-firebase-aula24112025.firebaseapp.com",
+            projectId: "nura-firebase-aula24112025",
+            storageBucket: "nura-firebase-aula24112025.firebasestorage.app",
+            messagingSenderId: "622140430264",
+            appId: "1:622140430264:web:5622fe037075fbe723614d"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        let currentUser = null;
+
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                currentUser = user;
+                const nome = user.displayName || "";
+
+                // ATUALIZA O HEADER
+                document.getElementById('header-user-display').innerText = `Olá, ${nome.split(' ')[0] || 'Usuário'}`;
+                document.getElementById('header-user-avatar').innerText = (nome.charAt(0) || 'U').toUpperCase();
+
+                // ATUALIZA OS CAMPOS
+                document.getElementById('input-nome').value = nome;
+                document.getElementById('input-email').value = user.email;
+            } else {
+                window.location.href = "cadastro.html";
+            }
+        });
+
+        document.getElementById('form-perfil').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const novoNome = document.getElementById('input-nome').value;
+            const novoEmail = document.getElementById('input-email').value;
+            const novaSenha = document.getElementById('input-senha').value;
+            const btnSalvar = document.getElementById('btn-salvar');
+
+            if (!currentUser) return;
+
+            btnSalvar.innerText = "Salvando...";
+            btnSalvar.disabled = true;
+            const promises = [];
+            let mensagens = [];
+
+            try {
+                if (novoNome !== currentUser.displayName) {
+                    promises.push(updateProfile(currentUser, { displayName: novoNome }).then(() => mensagens.push("Nome atualizado")));
+                }
+                if (novoEmail !== currentUser.email) {
+                    promises.push(updateEmail(currentUser, novoEmail).then(() => mensagens.push("Email atualizado")));
+                }
+                if (novaSenha.length > 0) {
+                    if (novaSenha.length < 6) throw new Error("A nova senha deve ter no mínimo 6 caracteres.");
+                    promises.push(updatePassword(currentUser, novaSenha).then(() => mensagens.push("Senha atualizada")));
+                }
+
+                if (promises.length === 0) {
+                    alert("Nenhuma alteração detectada.");
+                    btnSalvar.innerText = "Salvar Alterações";
+                    btnSalvar.disabled = false;
+                    return;
+                }
+
+                await Promise.all(promises);
+                alert("Sucesso!\n" + mensagens.join("\n"));
+
+                // Atualiza visual
+                if (mensagens.includes("Nome atualizado")) {
+                    document.getElementById('header-user-display').innerText = `Olá, ${novoNome.split(' ')[0]}`;
+                    document.getElementById('header-user-avatar').innerText = novoNome.charAt(0).toUpperCase();
+                }
+                document.getElementById('input-senha').value = "";
+
+            } catch (error) {
+                console.error(error);
+                if (error.code === 'auth/requires-recent-login') alert("Por segurança, faça login novamente para alterar e-mail ou senha.");
+                else alert("Erro: " + error.message);
+            } finally {
+                btnSalvar.innerText = "Salvar Alterações";
+                btnSalvar.disabled = false;
+            }
+        });
+
+        document.getElementById('btn-logout-firebase').addEventListener('click', async () => {
+            await signOut(auth);
+            window.location.href = "cadastro.html";
+        });
+    </script>
+</body>
+
+</html>

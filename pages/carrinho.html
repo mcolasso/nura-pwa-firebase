@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Nura - Carrinho</title>
+  <link rel="stylesheet" href="../styles/style.css">
+  <link rel="manifest" href="../manifest.json">
+  <meta name="theme-color" content="#16a34a">
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+
+<body>
+
+  <header>
+    <div class="container header-inner">
+      <a href="../index.html" class="logo">Nura<span>.</span></a>
+      <nav class="nav-links">
+        <a href="../index.html">Início</a>
+        <a href="produtos.html">Produtos</a>
+      </nav>
+      <div class="header-actions" style="display: flex; align-items: center; gap: 0.5rem;">
+        <span id="header-user-display" style="font-size: 0.9rem; font-weight: 600; color: var(--primary-dark);"></span>
+        <a href="perfil.html" class="btn btn-ghost"><i class="ph ph-user" style="font-size: 1.3rem;"></i></a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container" style="padding: 3rem 0; max-width: 900px;">
+    <h1 style="margin-bottom: 2rem; font-size: 2rem;">Sua Sacola</h1>
+
+    <div style="display: grid; grid-template-columns: 1fr 300px; gap: 2rem;">
+
+      <div id="cart-items-container">
+      </div>
+
+      <div style="height: fit-content;">
+        <div style="background: #f8fafc; padding: 1.5rem; border-radius: 1rem; border: 1px solid var(--border);">
+          <h3 style="margin-bottom: 1.5rem;">Resumo do Pedido</h3>
+
+          <div style="display: flex; justify-content: space-between; margin-bottom: 0.8rem; color: #64748b;">
+            <span>Subtotal</span>
+            <span id="resumo-subtotal">R$ 0,00</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; margin-bottom: 0.8rem; color: #64748b;">
+            <span>Entrega</span>
+            <span>R$ 10,00</span>
+          </div>
+
+          <div style="height: 1px; background: var(--border); margin: 1rem 0;"></div>
+
+          <div
+            style="display: flex; justify-content: space-between; margin-bottom: 1.5rem; font-size: 1.2rem; font-weight: 800; color: #0f172a;">
+            <span>Total</span>
+            <span id="resumo-total">R$ 0,00</span>
+          </div>
+
+          <button class="btn btn-primary btn-full" onclick="alert('Compra finalizada com sucesso! (Simulação)')">
+            Finalizar Compra
+          </button>
+          <a href="produtos.html"
+            style="display: block; text-align: center; margin-top: 1rem; font-size: 0.9rem; color: var(--primary-dark);">Continuar
+            comprando</a>
+        </div>
+      </div>
+    </div>
+
+    <style>
+      @media (max-width: 768px) {
+        div[style*="grid-template-columns"] {
+          grid-template-columns: 1fr !important;
+        }
+      }
+    </style>
+  </main>
+
+  <script src="../scripts/script.js"></script>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBoSeMo0JROnkjtNPQXCyt9Ezzi_pUrtN8",
+      authDomain: "nura-firebase-aula24112025.firebaseapp.com",
+      projectId: "nura-firebase-aula24112025",
+      storageBucket: "nura-firebase-aula24112025.firebasestorage.app",
+      messagingSenderId: "622140430264",
+      appId: "1:622140430264:web:5622fe037075fbe723614d"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    onAuthStateChanged(auth, (user) => {
+      const display = document.getElementById('header-user-display');
+      if (user && display) {
+        display.innerText = `Olá, ${user.displayName ? user.displayName.split(' ')[0] : 'Usuário'}`;
+      }
+    });
+  </script>
+</body>
+
+</html>

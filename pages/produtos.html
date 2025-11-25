@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nura - Cardápio</title>
+  <link rel="stylesheet" href="../styles/style.css">
+  <link rel="manifest" href="../manifest.json">
+  <meta name="theme-color" content="#16a34a">
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+
+<body>
+
+  <header>
+    <div class="container header-inner">
+      <a href="../index.html" class="logo">Nura<span>.</span></a>
+      <nav class="nav-links">
+        <a href="../index.html">Início</a>
+        <a href="produtos.html" style="color: var(--primary-dark); font-weight: bold;">Produtos</a>
+        <a href="cadastro.html" id="nav-conta">Minha Conta</a>
+      </nav>
+
+      <div class="header-actions" style="display: flex; align-items: center; gap: 0.5rem;">
+
+        <span id="header-user-display"
+          style="font-size: 0.9rem; font-weight: 600; color: var(--primary-dark); margin-right: 5px;"></span>
+
+        <a href="cadastro.html" class="btn btn-ghost" id="btn-icon-user">
+          <i class="ph ph-user" style="font-size: 1.3rem;"></i>
+        </a>
+
+        <a href="carrinho.html" class="btn btn-ghost" style="position: relative;">
+          <i class="ph ph-shopping-cart" style="font-size: 1.3rem;"></i>
+          <span class="cart-badge cart-count" style="display: none;">0</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container" style="padding: 3rem 0;">
+    <div style="text-align: center; margin-bottom: 3rem;">
+      <h1 style="font-size: 2.5rem; margin-bottom: 1rem; color: #1e293b;">Nosso Cardápio</h1>
+      <p style="color: #64748b;">Ingredientes frescos, locais e preparados com carinho.</p>
+    </div>
+
+    <div style="display: flex; justify-content: center; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 2rem;">
+      <button class="btn btn-primary">Todos</button>
+      <button class="btn btn-outline">Bowls</button>
+      <button class="btn btn-outline">Saladas</button>
+      <button class="btn btn-outline">Bebidas</button>
+    </div>
+
+    <div id="products-grid" class="products-grid">
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">&copy; 2025 Nura. Feito com amor.</div>
+  </footer>
+
+  <script src="../scripts/script.js"></script>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBoSeMo0JROnkjtNPQXCyt9Ezzi_pUrtN8",
+      authDomain: "nura-firebase-aula24112025.firebaseapp.com",
+      projectId: "nura-firebase-aula24112025",
+      storageBucket: "nura-firebase-aula24112025.firebasestorage.app",
+      messagingSenderId: "622140430264",
+      appId: "1:622140430264:web:5622fe037075fbe723614d"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    onAuthStateChanged(auth, (user) => {
+      const userDisplay = document.getElementById('header-user-display');
+      const iconUser = document.getElementById('btn-icon-user');
+      const navConta = document.getElementById('nav-conta');
+
+      if (user) {
+        // ESTÁ LOGADO
+        const primeiroNome = (user.displayName || "Usuário").split(' ')[0];
+
+        if (userDisplay) userDisplay.innerText = `Olá, ${primeiroNome}`;
+
+        if (iconUser) {
+          iconUser.href = 'perfil.html';
+          iconUser.style.color = 'var(--primary-dark)';
+        }
+
+        if (navConta) {
+          navConta.innerText = "Minha Conta";
+          navConta.href = 'perfil.html';
+        }
+
+      } else {
+        // NÃO ESTÁ LOGADO
+        if (userDisplay) userDisplay.innerText = "";
+        if (iconUser) {
+          iconUser.href = "cadastro.html";
+          iconUser.style.color = "";
+        }
+        if (navConta) {
+          navConta.href = "cadastro.html";
+        }
+      }
+    });
+  </script>
+</body>
+
+</html>
