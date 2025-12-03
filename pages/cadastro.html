@@ -1,16 +1,18 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nura - Acessar Conta</title>
-    
+
     <link rel="stylesheet" href="../styles/style.css">
     <link rel="manifest" href="../manifest.json">
     <meta name="theme-color" content="#16a34a">
 
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
 </head>
+
 <body>
 
     <header>
@@ -79,21 +81,22 @@
     <script type="module">
         // 1. Importar Firebase
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
-        import { 
-            getAuth, 
-            createUserWithEmailAndPassword, 
-            signInWithEmailAndPassword, 
-            updateProfile 
+        import {
+            getAuth,
+            createUserWithEmailAndPassword,
+            signInWithEmailAndPassword,
+            updateProfile
         } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
 
         // 2. Configuração
         const firebaseConfig = {
-            apiKey: "AIzaSyBoSeMo0JROnkjtNPQXCyt9Ezzi_pUrtN8",
-            authDomain: "nura-firebase-aula24112025.firebaseapp.com",
-            projectId: "nura-firebase-aula24112025",
-            storageBucket: "nura-firebase-aula24112025.firebasestorage.app",
-            messagingSenderId: "622140430264",
-            appId: "1:622140430264:web:5622fe037075fbe723614d"
+            apiKey: "AIzaSyCeROxrEbhuDM4hS-QOAnK5mEZbC39ZyPI",
+            authDomain: "nura-3c4e9.firebaseapp.com",
+            projectId: "nura-3c4e9",
+            storageBucket: "nura-3c4e9.firebasestorage.app",
+            messagingSenderId: "412561169474",
+            appId: "1:412561169474:web:be7508b7c01da8a3b6a1db",
+            measurementId: "G-LGPRRZQ26C"
         };
 
         // 3. Inicializar
@@ -104,7 +107,7 @@
         // 4. Lógica de CADASTRO
         document.getElementById('form-cadastro').addEventListener('submit', async (e) => {
             e.preventDefault();
-            
+
             const nome = document.getElementById('cadastro-nome').value;
             const email = document.getElementById('cadastro-email').value;
             const senha = document.getElementById('cadastro-senha').value;
@@ -128,12 +131,12 @@
                 console.error(error);
                 btn.innerText = "Criar Conta";
                 btn.disabled = false;
-                
+
                 let mensagem = "Erro ao criar conta.";
                 if (error.code === 'auth/email-already-in-use') mensagem = "Este email já está em uso.";
                 if (error.code === 'auth/weak-password') mensagem = "A senha é muito fraca (mínimo 6 caracteres).";
                 if (error.code === 'auth/invalid-email') mensagem = "Email inválido.";
-                
+
                 alert(mensagem);
             }
         });
@@ -151,7 +154,7 @@
                 btn.disabled = true;
 
                 await signInWithEmailAndPassword(auth, email, senha);
-                
+
                 // Se der certo, vai pro perfil
                 window.location.href = "perfil.html";
 
@@ -164,10 +167,11 @@
                 if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password' || error.code === 'auth/invalid-credential') {
                     mensagem = "Email ou senha incorretos.";
                 }
-                
+
                 alert(mensagem);
             }
         });
     </script>
 </body>
+
 </html>
